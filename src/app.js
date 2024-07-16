@@ -10,11 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const mongoClient = new MongoClient(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    tls: true
-});
+const mongoClient = new MongoClient(process.env.DATABASE_URL);
 let db;
 
 mongoClient.connect()
