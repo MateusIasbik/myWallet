@@ -3,8 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { db } from "../Utils/db";
-import { loginSchema } from "../Models/loginSchema";
-import { userSchema } from "../Models/userSchema";
+import { loginSchema } from "../models/loginSchema";
+import { userSchema } from "../models/userSchema";
 
 dotenv.config();
 
