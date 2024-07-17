@@ -1,14 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { db } from "./utils/db.js";
-import { loginSchema } from "../models/loginSchema.js";
-import { userSchema } from "../models/userSchema.js";
+import { db } from "/utils/db.js"; // Caminho atualizado
+import { loginSchema } from "/models/loginSchema.js"; // Caminho atualizado
+import { userSchema } from "/models/userSchema.js"; // Caminho atualizado
 
 dotenv.config();
 
 export async function signUp(req, res) {
-
     const { name, email, password } = req.body;
 
     const validate = userSchema.validate(req.body, { abortEarly: false });
@@ -35,14 +34,12 @@ export async function signUp(req, res) {
         await db.collection("users").insertOne(user);
 
         res.status(201).send("Usuário cadastrado com sucesso!");
-
     } catch (err) {
         return res.status(500).send(err.message);
     }
 }
 
 export async function signIn(req, res) {
-
     const { email, password } = req.body;
 
     const validate = loginSchema.validate(req.body, { abortEarly: false });
@@ -60,9 +57,8 @@ export async function signIn(req, res) {
         }
 
         if (user && bcrypt.compareSync(password, user.password)) {
-            const token = jwt.sign({ id: user_id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET); // Corrigi o id do usuário
             return res.status(200).send({ token });
-
         } else {
             res.status(401).send("Senha incorreta!");
         }
@@ -70,14 +66,3 @@ export async function signIn(req, res) {
         res.status(500).send(err.message);
     }
 }
-
-
-
-// Rotas para usuários
-// router.get("/", userController.getUsers);
-// router.get("/:id", userController.getUserById);
-// router.post("/", userController.createUser);
-// router.put("/:id", userController.updateUser);
-// router.delete("/:id", userController.deleteUser);
-
-// export default router;
