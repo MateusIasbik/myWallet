@@ -7,7 +7,6 @@ import { userSchema } from "../Models/userSchema.js";
 
 dotenv.config();
 
-
 export async function signUp(req, res) {
     const { name, email, password } = req.body;
 
