@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import routes from "./src/routes/indexRouter";
+import router from "..indexRouter.js";
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 // ROTAS AQUI
-app.use(routes);
+app.use(router);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Rodando na porta ${port}`));
