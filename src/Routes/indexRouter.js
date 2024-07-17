@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signIn, signUp } from "../Controllers/user.js";
+import { signIn, signUp } from "../Controllers/users.js";
 // import { transactionController } from "../Controllers/transaction";
 
 const route = Router();
