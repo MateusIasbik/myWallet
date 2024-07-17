@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { signIn, signUp } from "../controllers/user.js";
+import { signIn, signUp } from "../Controllers/user.js";
 // import { transactionController } from "../Controllers/transaction";
 
-const router = Router();
+const route = Router();
 
-router.post("/sign-up", signUp);
-router.post("/sign-in", signIn);
+route.post("/sign-up", signUp);
+route.post("/sign-in", signIn);
 
 // router.use(userController);
 // router.use(transactionController);
 
-export default router;
+export default route;
