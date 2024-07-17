@@ -8,8 +8,6 @@ import { userSchema } from "../models/userSchema";
 
 dotenv.config();
 
-const router = express.Router();
-
 export async function signUp(req, res) {
 
     const { name, email, password } = req.body;
