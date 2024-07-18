@@ -1,21 +1,12 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { db } from "../config/db.js";
 import dotenv from "dotenv";
-import { db } from "../Utils/db.js";
-import { loginSchema } from "../Models/loginSchema.js";
-import { userSchema } from "../Models/userSchema.js";
 
 dotenv.config();
 
 export async function signUp(req, res) {
     const { name, email, password } = req.body;
-
-    const validate = userSchema.validate(req.body, { abortEarly: false });
-
-    if (validate.error) {
-        const errors = validate.error.details.map((detail) => detail.message);
-        return res.status(422).send(errors);
-    }
 
     try {
         const userSent = await db.collection("users").findOne({ email });
@@ -41,13 +32,6 @@ export async function signUp(req, res) {
 
 export async function signIn(req, res) {
     const { email, password } = req.body;
-
-    const validate = loginSchema.validate(req.body, { abortEarly: false });
-
-    if (validate.error) {
-        const errors = validate.error.details.map((detail) => detail.message);
-        return res.status(422).send(errors);
-    }
 
     try {
         const user = await db.collection("users").findOne({ email });
