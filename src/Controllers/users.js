@@ -57,7 +57,15 @@ export async function signIn(req, res) {
         }
 
         if (user && bcrypt.compareSync(password, user.password)) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET); // Corrigi o id do usuário
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+
+            const session = {
+                token,
+                userId: user._id
+            };
+
+            await db.collection("sessions").insertOne(session);
+
             return res.status(200).send({ token });
         } else {
             res.status(401).send("Senha incorreta!");

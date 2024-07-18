@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import route from "./Routes/indexRouter.js";
@@ -6,7 +6,7 @@ import route from "./Routes/indexRouter.js";
 dotenv.config();
 
 const app = express();
-app.use(express.json());
+app.use(json());
 app.use(cors());
 
 // ROTAS AQUI
