@@ -46,13 +46,6 @@ export async function signIn(req, res) {
                 process.env.JWT_SECRET,
                 { expiresIn: 86400 });
 
-            // const session = {
-            //     token,
-            //     userId: user._id
-            // };
-
-            // await db.collection("sessions").insertOne(session);
-
             return res.status(200).send({ token });
         } else {
             res.status(401).send("Senha incorreta!");

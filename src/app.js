@@ -9,8 +9,7 @@ dotenv.config();
 const app = express();
 app.use(json());
 app.use(cors());
-
-// ROTAS AQUI
+ 
 app.use(usersRouter);
 app.use(transactionsRouter);
 
