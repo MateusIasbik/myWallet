@@ -41,14 +41,17 @@ export async function signIn(req, res) {
         }
 
         if (user && bcrypt.compareSync(password, user.password)) {
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+            const token = jwt.sign(
+                { userId: user._id },
+                process.env.JWT_SECRET,
+                { expiresIn: 86400 });
 
-            const session = {
-                token,
-                userId: user._id
-            };
+            // const session = {
+            //     token,
+            //     userId: user._id
+            // };
 
-            await db.collection("sessions").insertOne(session);
+            // await db.collection("sessions").insertOne(session);
 
             return res.status(200).send({ token });
         } else {
