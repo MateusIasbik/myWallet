@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { db } from "../config/db.js"
 import dotenv from "dotenv";
 
@@ -39,14 +40,14 @@ export async function showtransactions(req, res) {
     }
 
     const start = (page - 1) * limit;
-    
+
     try {
         const transactions = await db.collection("transactions")
-        .find()
-        .skip(start)
-        .limit(limit)
-        .toArray();
-        
+            .find()
+            .skip(start)
+            .limit(limit)
+            .toArray();
+
         transactions.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
 
         res.status(200).send(transactions);
@@ -56,29 +57,53 @@ export async function showtransactions(req, res) {
     }
 }
 
-export async function edittransactions(req, res) {
+export async function editTransactions(req, res) {
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10;
+    const { id } = req.params;
+    const { value, description } = req.body;
 
-    if (page <= 0) {
-        return res.status(400).send("O valor da página deve ser positivo!")
+    if (!ObjectId.isValid(id)) {
+        return res.status(401).send("ID inválido");
     }
 
-    const start = (page - 1) * limit;
-    
     try {
-        const transactions = await db.collection("transactions")
-        .find()
-        .skip(start)
-        .limit(limit)
-        .toArray();
-        
-        transactions.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
+        const result = await db.collection("transactions")
+            .updateOne(
+                { _id: new ObjectId(id) },
+                { $set: { value: value, description: description } }
+            );
 
-        res.status(200).send(transactions);
+        if (result.matchedCount === 0) {
+            return res.status(404).send("Transação não encontrada!")
+        }
+
+        res.sendStatus(204);
 
     } catch (err) {
-        return res.status(401).send(err.message);
+        res.status(500).send(err.message);
     }
+}
+
+export async function deleteTransactions(req, res) {
+
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+        return res.status(401).send("ID inválido");
+    }
+
+  try {
+    const result = await db.collection("transactions")
+      .deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).send("Transação não encontrada");
+    }
+
+    res.sendStatus(204);
+    
+  } catch (err) {
+    return res.status(500).send(err.message);
+  }
+
 }
