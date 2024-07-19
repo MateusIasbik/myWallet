@@ -76,7 +76,6 @@ export async function editTransactions(req, res) {
         if (result.matchedCount === 0) {
             return res.status(404).send("Transação não encontrada!")
         }
-
         res.sendStatus(204);
 
     } catch (err) {
@@ -101,7 +100,7 @@ export async function deleteTransactions(req, res) {
     }
 
     res.sendStatus(204);
-    
+
   } catch (err) {
     return res.status(500).send(err.message);
   }
