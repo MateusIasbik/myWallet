@@ -4,6 +4,11 @@ import jwt from "jsonwebtoken"
 
 export async function validateToken(req, res, next) {
     const { authorization } = req.headers;
+
+    if (!authorization) {
+        return res.status(401).send("Token não fornecido!");
+    }
+
     const token = authorization?.replace("Bearer ", "").trim();
     if (!token) return res.status(401).send("Acesso não autorizado!");
 
@@ -11,9 +16,6 @@ export async function validateToken(req, res, next) {
 
         jwt.verify(token, process.env.JWT_SECRET, async (error, decoded) => {
             if (error) return res.status(401).send(error);
-            
-            // const session = await db.collection("sessions").findOne({ token });
-            // if (!session) return res.status(401).send("Acesso não autorizado!")
 
             const user = await db.collection("users").findOne({
                 _id: new ObjectId(decoded.userId)
