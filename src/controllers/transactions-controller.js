@@ -42,13 +42,16 @@ export async function showtransactions(req, res) {
     const start = (page - 1) * limit;
 
     try {
+
+        const { _id: userId } = req.user;
+
         const transactions = await db.collection("transactions")
-            .find()
+            .find({ userId: new ObjectId(userId) })
+            .sort({ _id: -1 })
             .skip(start)
             .limit(limit)
             .toArray();
 
-        transactions.sort((a, b) => b._id.getTimestamp() - a._id.getTimestamp());
 
         res.status(200).send(transactions);
 
