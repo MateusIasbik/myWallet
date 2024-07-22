@@ -63,7 +63,7 @@ export async function showtransactions(req, res) {
 export async function editTransactions(req, res) {
 
     const { id } = req.params;
-    const { value, description } = req.body;
+    const { value, description, type } = req.body;
 
     if (!ObjectId.isValid(id)) {
         return res.status(401).send("ID inválido");
@@ -73,7 +73,7 @@ export async function editTransactions(req, res) {
         const result = await db.collection("transactions")
             .updateOne(
                 { _id: new ObjectId(id) },
-                { $set: { value: value, description: description } }
+                { $set: { value: value, description: description, type: type } }
             );
 
         if (result.matchedCount === 0) {
